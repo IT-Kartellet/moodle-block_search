@@ -6,9 +6,7 @@ global $PAGE, $OUTPUT, $USER, $DB, $CFG;
 $PAGE->set_context(context_system::instance());
 
 $PAGE->set_url('/blocks/search/results.php');
-$PAGE->set_pagelayout('standard');
-$PAGE->set_heading('Search');
-$PAGE->set_title('Search');
+$PAGE->set_pagelayout('search-solar');
 
 require("$CFG->dirroot/admin/tool/coursesearch/coursesearch_resultsui_form.php");
 require_once("$CFG->dirroot/$CFG->admin/tool/coursesearch/locallib.php");
@@ -61,18 +59,20 @@ if ($ob->tool_coursesearch_pingsolr()) {
 
         $totalcount = $ob->tool_coursesearch_coursecount($response);
 
+        $content .= html_writer::start_div('search-results-header-wrapper');
+        $content .= html_writer::tag('i', null, array('class' => 'fa fa-search'));
+
         if (!$totalcount) {
             if (!empty($searchcriteria['search'])) {
-                $content .= html_writer::tag('h2', get_string('nocoursesfound', '', $searchcriteria['search']));
+                $content .= html_writer::tag('h2', get_string('nocoursesfound', '', $searchcriteria['search']), array('class' => 'search-results-header'));
             } else {
-                $content .= html_writer::tag('h2', get_string('novalidcourses'));
+                $content .= html_writer::tag('h2', get_string('novalidcourses'), array('class' => 'search-results-header'));
             }
         } else {
-            $content .= html_writer::tag('h2', get_string('searchresults') . ": $totalcount");
-            if (isset($qtime)) {
-                $content .= html_writer::tag('em', "Query Time " . $qtime / (1000) . " Seconds");
-            }
+            $content .= html_writer::tag('h2', get_string('searchresults'), array('class' => 'search-results-header'));
         }
+
+        $content .= html_writer::end_div();
 
         $content .= html_writer::start_div('search-results');
         $docs_rendered = 0;
@@ -133,9 +133,11 @@ if ($ob->tool_coursesearch_pingsolr()) {
                     new moodle_url('results.php?search=' . rawurlencode($didyoumean)), $didyoumean) . '?');
         }
 
+        /*
         if ($docs_rendered < $totalcount) {
             $content .= $OUTPUT->paging_bar($totalcount, $page, $perpage, new moodle_url('/blocks/search/results.php', $searchcriteria));
         }
+        */
         echo $content;
     }
 } else {

@@ -1,5 +1,5 @@
 <?php
 $string['pluginname'] = 'Search';
-$string['simplehtml'] = 'Simple HTML';
-$string['simplehtml:addinstance'] = 'Add a new simple HTML block';
-$string['simplehtml:myaddinstance'] = 'Add a new simple HTML block to the My Moodle page';
+$string['search'] = 'Simple HTML';
+$string['search:addinstance'] = 'Add a new simple HTML block';
+$string['search:myaddinstance'] = 'Add a new simple HTML block to the My Moodle page';
