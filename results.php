@@ -117,8 +117,9 @@ if ($ob->tool_coursesearch_pingsolr()) {
         if(!empty($course_ids)){
             $sql_ids = implode(',', array_keys($course_ids));
             $result = $DB->get_records_sql("SELECT * FROM {course} WHERE id IN($sql_ids)");
-
-            $content .= $courserenderer->courses_list($result);
+            if($result){
+                $content .= $courserenderer->courses_list($result);
+            }
         }
 
         $content .= html_writer::end_div('search-results');
