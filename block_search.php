@@ -6,6 +6,7 @@ class block_search extends block_base {
 
     public function get_content() {
         global $CFG;
+
         if ($this->content === null) {
             $this->content         =  new stdClass;
 
