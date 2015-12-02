@@ -62,7 +62,9 @@ if ($ob->tool_coursesearch_pingsolr()) {
         $highlight =  $results->highlighting;
         $response = $results->response;
 
-        $totalcount = $ob->tool_coursesearch_coursecount($response);
+        //$totalcount = $ob->tool_coursesearch_coursecount($response);
+        //We want the user to see all courses within his institution, no matter whether he is enrolled or not
+        $totalcount = $response->numFound;
 
         $content .= html_writer::start_div('search-results-header-wrapper');
         $content .= html_writer::img($OUTPUT->pix_url('Icons_Resources', 'theme_learngo'), null);
@@ -90,9 +92,11 @@ if ($ob->tool_coursesearch_pingsolr()) {
 
             $item = '';
 
+            /*
             if (!tool_coursesearch_locallib::tool_coursesearch_can_view($doc)) {
                 continue;
             }
+            */
 
             $docs_rendered++;
 
@@ -116,7 +120,13 @@ if ($ob->tool_coursesearch_pingsolr()) {
 
         if(!empty($course_ids)){
             $sql_ids = implode(',', array_keys($course_ids));
-            $result = $DB->get_records_sql("SELECT * FROM {course} WHERE id IN($sql_ids)");
+
+            //Filter courses by institution
+            $result = $DB->get_records_sql("SELECT c.id, cc.path
+                  FROM {course} c
+                  JOIN {course_categories} cc ON cc.id = c.category
+                  WHERE TRIM(LEADING '/' FROM SUBSTRING_INDEX(cc.path, '/', 2)) IN (
+	                SELECT id from {course_categories} WHERE idnumber = :idnumber OR idnumber = 'joint')", array('idnumber' => $USER->institution));
             if($result){
                 $content .= $courserenderer->courses_list($result);
             }

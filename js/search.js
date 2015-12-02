@@ -1,18 +1,19 @@
 $(function(){
     initialize_coursebox_state();
 
-    $("div.search-results > div.courses > div.coursebox div.content > div.course-info-wrapper > span," +
-        "div.search-results div.coursebox div.summary.itk-collapsible").click(function(){
+    $(".search-results > div.courses > div.coursebox .content .course-info-wrapper span.read-more," +
+        ".search-results div.coursebox .summary.itk-collapsible").click(function(){
+
         var wrapper = null;
         var collapsible = null;
         var __this = $(this);
 
-        if(__this.prop('nodeName') == 'DIV'){
+        if(__this.prop('nodeName') == 'TR'){
             wrapper = __this;
-            collapsible = __this.parent().find('> span');
+            collapsible = __this.parent().find('span.read-more');
         }
         else{
-            wrapper = __this.parent().find('div.summary');
+            wrapper = __this.parent().parent().parent().find('.summary');
             collapsible = __this;
         }
 
@@ -24,14 +25,13 @@ $(function(){
 });
 
 function initialize_coursebox_state(){
-    $('div.search-results > div.courses > div.coursebox div.content > div.course-info-wrapper > div.summary').each(function(){
+    $('.search-results > div.courses > div.coursebox .content .course-info-wrapper .summary').each(function(){
         var __this = $(this);
-
         if(calculate_number_of_lines(__this, 3)){
             __this.addClass('itk-collapsible');
         }
         else{
-            __this.parent().find('> span').hide();
+            __this.parent().find('span.read-more').hide();
         }
     });
 }
@@ -51,6 +51,5 @@ function toggle_text(element){
 
 //Whether a DOM element has more lines than expected
 function calculate_number_of_lines(element, expected_lines){
-    console.log("Offset: " + element[0].offsetHeight + " | line height: " + parseInt(element.css('lineHeight'), 10));
     return element[0].offsetHeight / parseInt(element.css('lineHeight'), 10) > expected_lines;
 }
