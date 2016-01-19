@@ -87,6 +87,7 @@ if ($ob->tool_coursesearch_pingsolr()) {
         $courserenderer = $PAGE->get_renderer('core', 'course');
 
         $course_ids = array();
+        $courses = array();
 
         foreach ($response->docs as $doc) {
 
@@ -104,6 +105,12 @@ if ($ob->tool_coursesearch_pingsolr()) {
                 case 'course':
                     $link = new moodle_url('/course/view.php', array('id' => $doc->courseid));
                     $course_ids[$doc->courseid] = $doc;
+                    $courses[$doc->courseid] = new stdClass();
+                    $keys = $doc->getFieldNames();
+                    foreach($keys as $key){
+                        $courses[$doc->courseid]->{$key} = $doc->{$key};
+                    }
+                    $courses[$doc->courseid]->id = $doc->courseid;
                     break;
                 /*
                 case 'course_module':
@@ -118,6 +125,7 @@ if ($ob->tool_coursesearch_pingsolr()) {
             }
         }
 
+        /*
         if(!empty($course_ids)){
             $sql_ids = implode(',', array_keys($course_ids));
 
@@ -131,6 +139,9 @@ if ($ob->tool_coursesearch_pingsolr()) {
                 $content .= $courserenderer->courses_list($result);
             }
         }
+        */
+
+        $content .= $courserenderer->courses_list($courses);
 
         $content .= html_writer::end_div('search-results');
 
