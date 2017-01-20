@@ -3,6 +3,8 @@
 namespace block_search\form;
 
 require_once("$CFG->dirroot/$CFG->admin/tool/coursesearch/locallib.php");
+require_once($CFG->libdir . '/formslib.php');
+
 
 class search_form extends \moodleform {
     function definition() {
