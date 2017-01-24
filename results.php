@@ -21,7 +21,7 @@ echo $OUTPUT->header();
 $ob = new tool_coursesearch_locallib();
 if ($ob->tool_coursesearch_pingsolr()) {
     $PAGE->requires->js_init_call('M.tool_coursesearch.auto', $ob->tool_coursesearch_autosuggestparams());
-    $PAGE->requires->js_init_call('M.tool_coursesearch.sort');
+    //$PAGE->requires->js_init_call('M.tool_coursesearch.sort');
     $mform = new coursesearch_resultsui_form(
         new moodle_url("/blocks/search/results.php"), null, 'post', null, array(
         "id" => "searchformui"

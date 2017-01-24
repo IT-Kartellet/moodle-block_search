@@ -16,6 +16,6 @@ class search_form extends \moodleform {
         $ob = new \tool_coursesearch_locallib();
 
         $PAGE->requires->js_init_call('M.tool_coursesearch.auto', $ob->tool_coursesearch_autosuggestparams());
-        $PAGE->requires->js_init_call('M.tool_coursesearch.sort');
+        //$PAGE->requires->js_init_call('M.tool_coursesearch.sort');
     }
 }
