@@ -49,6 +49,10 @@ if ($ob->tool_coursesearch_pingsolr()) {
     if (!empty($searchcriteria)) {
         $content = '';
         $displayoptions = array();
+
+        $displayoptions['sortmenu'] = optional_param('sortmenu', 'fullname', PARAM_TEXT);
+        $displayoptions['order'] = optional_param('order', 'asc', PARAM_TEXT);
+
         $perpage        = optional_param('perpage', 'all', PARAM_RAW);
         if ($perpage !== 'all') {
             $displayoptions['limit']  = ((int) $perpage <= 0) ? $CFG->coursesperpage : (int) $perpage;
