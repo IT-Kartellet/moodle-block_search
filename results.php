@@ -116,16 +116,16 @@ if ($ob->tool_coursesearch_pingsolr()) {
                     }
                     $courses[$doc->courseid]->id = $doc->courseid;
                     break;
-                /*
                 case 'course_module':
                     $link = new moodle_url('/mod/' . $doc->modname . '/view.php', array('id' => $doc->modid));
+                    $course = $DB->get_record('course', array('id' => $doc->courseid));
+                    $courses[$doc->courseid] = $course;
                     break;
-
-                case 'forum_post':
-                    $postid = str_replace('forum_post_', '', $doc->id);
-                    $link = new moodle_url('/mod/forum/discuss.php', array('d' => $doc->metadata_discussionid), 'p' . $postid);
-                    break;
-                */
+//
+//                case 'forum_post':
+//                    $postid = str_replace('forum_post_', '', $doc->id);
+//                    $link = new moodle_url('/mod/forum/discuss.php', array('d' => $doc->metadata_discussionid), 'p' . $postid);
+//                    break;
             }
         }
 
@@ -144,6 +144,10 @@ if ($ob->tool_coursesearch_pingsolr()) {
             }
         }
         */
+
+        usort($courses, function($a, $b) {
+            return strcasecmp($a->fullname, $b->fullname);
+        });
 
         $content .= $courserenderer->courses_list($courses);
 
